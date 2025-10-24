@@ -71,7 +71,9 @@ Each adapter auto‑detects if its SDK is present and logs a clear warning if mi
 
 ### Event Bus
 
-A simple publish/subscribe system decouples your game systems. Raise events (like `DoorToggleEvent`, `FootstepEvent`) from any code and subscribe from another without references.  
+A simple publish/subscribe system decouples your game systems. Raise events (like `DoorToggleEvent`, `FootstepEvent`) from any code and subscribe from another without references.
+
+**Need a full list of events?**  See the [EVENTS.md](EVENTS.md) reference for every built‑in event type and its fields.
 
 ### Character Framework
 
