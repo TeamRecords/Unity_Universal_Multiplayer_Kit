@@ -1,0 +1,12 @@
+{
+  "name": "UMK.Support",
+  "autoReferenced": true,
+  "references": [],
+  "versionDefines": [
+    {
+      "name": "com.mirror-networking.mirror",
+      "expression": ">=0.0.0",
+      "define": "HAS_MIRROR"
+    }
+  ]
+}

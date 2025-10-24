@@ -1,0 +1,17 @@
+{
+  "name": "UMK.Adapters",
+  "references": [
+    "UMK.Core",
+    "Unity.InputSystem",
+    "Mirror",
+    "Mirror.Components"
+  ],
+  "autoReferenced": true,
+  "versionDefines": [
+    {
+      "name": "com.mirror-networking.mirror",
+      "expression": ">=0.0.0",
+      "define": "HAS_MIRROR"
+    }
+  ]
+}

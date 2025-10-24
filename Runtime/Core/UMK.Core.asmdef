@@ -1,0 +1,27 @@
+{
+  "name": "UMK.Core",
+  "references": [
+    "Unity.InputSystem"
+  ],
+  "autoReferenced": true,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "defineConstraints": [],
+  "versionDefines": [
+    {
+      "name": "com.mirror-networking.mirror",
+      "expression": ">=0.0.0",
+      "define": "HAS_MIRROR"
+    },
+    {
+      "name": "com.unity.transport",
+      "expression": ">=1.0.0",
+      "define": "HAS_UTP"
+    },
+    {
+      "name": "com.unity.services.relay",
+      "expression": ">=1.0.0",
+      "define": "HAS_UGS_RELAY"
+    }
+  ]
+}
