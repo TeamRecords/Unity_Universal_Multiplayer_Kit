@@ -17,6 +17,19 @@ namespace UMK.Core
         public IDiagnosticsProvider Diagnostics => _diag;
         public UMK_NetworkConfig Config => config;
 
+        /// <summary>
+        /// Indicates whether this instance is running in server mode or in offline (no network) mode.
+        /// When Mirror is present this checks the NetworkServer.active flag. Without Mirror it always
+        /// returns true so that server‑only logic executes in local/offline runs. Use this property
+        /// from non-networked scripts (e.g. examples) to gate actions that should only occur on the
+        /// host or in offline scenarios.
+        /// </summary>
+#if HAS_MIRROR
+        public bool IsServerOrOffline => Mirror.NetworkServer.active;
+#else
+        public bool IsServerOrOffline => true;
+#endif
+
         void Awake()
         {
             if (Instance && Instance != this) { Destroy(gameObject); return; }

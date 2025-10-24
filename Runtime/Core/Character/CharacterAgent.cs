@@ -71,7 +71,7 @@ namespace UMK.Core.Character
             if (inputSource.GetAction())
             {
                 // Raycast to interactables
-                if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, 3f))
+                if (UnityEngine.Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, 3f))
                 {
                     var interactable = hit.collider.GetComponentInParent<IInteractable>();
                     interactable?.Interact(this);

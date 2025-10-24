@@ -1,5 +1,6 @@
 using UnityEngine;
 using UMK.Core;
+using UMK.Core.Character;
 
 /// <summary>
 /// Spawns a player character with UMK character components. Requires a prefab with CharacterAgent,
@@ -23,11 +24,11 @@ public class CharacterSetupExample : MonoBehaviour
     void SpawnPlayer(Vector3 position)
     {
         var go = Instantiate(playerPrefab, position, Quaternion.identity);
-        var agent = go.GetComponent<CharacterAgent>();
-        if (agent != null)
-        {
-            // Assign a custom input source if desired; otherwise, CharacterInput_Default will be used automatically.
-            // For example: agent.inputSource = new MyCustomInputSource();
-        }
+            var agent = go.GetComponent<CharacterAgent>();
+            if (agent != null)
+            {
+                // Assign a custom input source if desired; otherwise, CharacterInput_Default will be used automatically.
+                // For example: agent.inputSource = new MyCustomInputSource();
+            }
     }
 }

@@ -99,7 +99,7 @@ namespace UMK.Core.Environment
         private void PropagateFire()
         {
             // find nearby FirePropagators and ignite them
-            Collider[] hits = Physics.OverlapSphere(transform.position, propagationRadius);
+            Collider[] hits = UnityEngine.Physics.OverlapSphere(transform.position, propagationRadius);
             foreach (var hit in hits)
             {
                 var other = hit.GetComponent<FirePropagator>();

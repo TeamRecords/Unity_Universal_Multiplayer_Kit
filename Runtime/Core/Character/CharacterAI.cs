@@ -37,7 +37,7 @@ namespace UMK.Core.Character
             Vector3 move = dir.normalized * moveSpeed;
             // Simple gravity
             if (_cc.isGrounded) _velocity.y = -1f;
-            else _velocity.y += Physics.gravity.y * Time.deltaTime;
+            else _velocity.y += UnityEngine.Physics.gravity.y * Time.deltaTime;
             Vector3 final = new Vector3(move.x, _velocity.y, move.z);
             _cc.Move(final * Time.deltaTime);
         }
