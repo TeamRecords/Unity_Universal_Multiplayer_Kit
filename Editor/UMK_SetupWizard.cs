@@ -60,19 +60,27 @@ public class UMK_SetupWizard : EditorWindow
 
     void RunChecks(UMK_NetworkConfig cfg)
     {
-#if HAS_MIRROR
-        Debug.Log("[UMK] Mirror detected.");
-#else
-        Debug.LogWarning("[UMK] Mirror NOT detected. Mirror transports will run in offline shim or be unavailable.");
-#endif
+        // Mirror presence detection
+        bool mirrorFound = FindType("Mirror.NetworkManager") != null || FindType("Mirror.NetworkIdentity") != null;
+        if (mirrorFound)
+        {
+            Debug.Log("[UMK] Mirror detected.");
+        }
+        else
+        {
+            Debug.LogWarning("[UMK] Mirror NOT detected. Mirror transports will run in offline shim or be unavailable.");
+        }
 
+        // Transport-specific checks
         if (cfg.transport == TransportKind.SteamSDR)
         {
             bool found = FindType("SteamSocketsTransport") != null ||
                          FindType("FizzySteamworks") != null ||
                          FindType("FacepunchTransport") != null;
-            if (!found) EditorUtility.DisplayDialog("UMK", "No Steam transport found. Add a Steam Sockets transport to NetworkManager.", "OK");
-            else Debug.Log("[UMK] Steam transport type found.");
+            if (!found)
+                EditorUtility.DisplayDialog("UMK", "No Steam transport found. Add a Steam Sockets transport to NetworkManager.", "OK");
+            else
+                Debug.Log("[UMK] Steam transport type found.");
         }
 
         if (cfg.transport == TransportKind.UnityRelay)
@@ -83,7 +91,8 @@ public class UMK_SetupWizard : EditorWindow
             bool ngo = FindType("Unity.Netcode.NetworkManager") != null;
             if (!services || !relay || !utp || !ngo)
                 EditorUtility.DisplayDialog("UMK", "Relay requirements missing (Services Core + Relay + UTP + NGO).", "OK");
-            else Debug.Log("[UMK] Unity Relay prerequisites present.");
+            else
+                Debug.Log("[UMK] Unity Relay prerequisites present.");
         }
 
         CheckAC(cfg);
