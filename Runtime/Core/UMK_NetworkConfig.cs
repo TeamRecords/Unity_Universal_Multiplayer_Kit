@@ -14,7 +14,7 @@ namespace UMK.Core
         public KeyCode toggleOverlayKey = KeyCode.F9;
 
         [Header("Steam (SDR)")]
-        public bool createSteamTransportIfMissing = true; // try to add a known Steam transport if found by name
+        public bool createSteamTransportIfMissing = true;
 
         [Header("Unity Relay")]
         public string joinCode = "";

@@ -39,12 +39,12 @@ public class UMK_SetupWizard : EditorWindow
         config.transport = (TransportKind)EditorGUILayout.EnumPopup("Transport", config.transport);
         if (config.transport == TransportKind.SteamSDR)
         {
-            EditorGUILayout.HelpBox("Requires a Steam Sockets transport (e.g., SteamSocketsTransport/FizzySteamworks) on the NetworkManager.", MessageType.Info);
+            EditorGUILayout.HelpBox("Requires a Steam Sockets transport (SteamSocketsTransport/FizzySteamworks) on NetworkManager.", MessageType.Info);
             config.createSteamTransportIfMissing = EditorGUILayout.Toggle("Auto-attach Steam transport", config.createSteamTransportIfMissing);
         }
         if (config.transport == TransportKind.UnityRelay)
         {
-            EditorGUILayout.HelpBox("Requires Unity Services Core + Relay + Unity Transport + (optional) NGO NetworkManager.", MessageType.Info);
+            EditorGUILayout.HelpBox("Requires: Services Core + Relay + Unity Transport + NGO NetworkManager.", MessageType.Info);
             config.joinCode = EditorGUILayout.TextField("Join Code (client)", config.joinCode);
             config.maxRelayConnections = EditorGUILayout.IntField("Max Clients (host)", config.maxRelayConnections);
         }
@@ -68,9 +68,9 @@ public class UMK_SetupWizard : EditorWindow
 
         if (cfg.transport == TransportKind.SteamSDR)
         {
-            var found = FindType("SteamSocketsTransport") != null ||
-                        FindType("FizzySteamworks") != null ||
-                        FindType("FacepunchTransport") != null;
+            bool found = FindType("SteamSocketsTransport") != null ||
+                         FindType("FizzySteamworks") != null ||
+                         FindType("FacepunchTransport") != null;
             if (!found) EditorUtility.DisplayDialog("UMK", "No Steam transport found. Add a Steam Sockets transport to NetworkManager.", "OK");
             else Debug.Log("[UMK] Steam transport type found.");
         }
@@ -80,34 +80,30 @@ public class UMK_SetupWizard : EditorWindow
             bool services = FindType("Unity.Services.Core.UnityServices") != null;
             bool relay = FindType("Unity.Services.Relay.RelayService") != null;
             bool utp = FindType("Unity.Netcode.Transports.UTP.UnityTransport") != null || FindType("UnityTransport") != null;
-            if (!services || !relay || !utp)
-                EditorUtility.DisplayDialog("UMK", "Relay requirements missing. Need Services Core + Relay + Unity Transport (UTP).", "OK");
-            else Debug.Log("[UMK] Unity Relay prerequisites are present.");
+            bool ngo = FindType("Unity.Netcode.NetworkManager") != null;
+            if (!services || !relay || !utp || !ngo)
+                EditorUtility.DisplayDialog("UMK", "Relay requirements missing (Services Core + Relay + UTP + NGO).", "OK");
+            else Debug.Log("[UMK] Unity Relay prerequisites present.");
         }
 
+        CheckAC(cfg);
+    }
+
+    void CheckAC(UMK_NetworkConfig cfg)
+    {
         switch (cfg.antiCheat)
         {
-            case AntiCheatKind.UnityGameShield:
-                ReportPresence("UnityGameShield.EntryPoint, UnityGameShield", "Unity Game Shield");
-                break;
-            case AntiCheatKind.Guard:
-                ReportPresence("Guard.Core.Entry, Guard", "GUARD");
-                break;
+            case AntiCheatKind.UnityGameShield: ReportPresence("UnityGameShield.EntryPoint, UnityGameShield", "Unity Game Shield"); break;
+            case AntiCheatKind.Guard: ReportPresence("Guard.Core.Entry, Guard", "GUARD"); break;
             case AntiCheatKind.VAC:
                 bool vac = FindType("Steamworks.SteamClient, Facepunch.Steamworks") != null ||
                            FindType("Steamworks.SteamAPI, Steamworks.NET") != null;
                 if (!vac) EditorUtility.DisplayDialog("UMK", "Steamworks not found (VAC requires Steam).", "OK");
                 else Debug.Log("[UMK] Steamworks present.");
                 break;
-            case AntiCheatKind.EAC:
-                ReportPresence("EasyAntiCheat.Client.Hydra, EasyAntiCheat.Client", "EAC");
-                break;
-            case AntiCheatKind.BattleEye:
-                ReportPresence("BattlEye.BEClient, BattlEye", "BattlEye");
-                break;
-            default:
-                Debug.Log("[UMK] Default Validation selected.");
-                break;
+            case AntiCheatKind.EAC: ReportPresence("EasyAntiCheat.Client.Hydra, EasyAntiCheat.Client", "EAC"); break;
+            case AntiCheatKind.BattleEye: ReportPresence("BattlEye.BEClient, BattlEye", "BattlEye"); break;
+            default: Debug.Log("[UMK] Default Validation selected."); break;
         }
     }
 

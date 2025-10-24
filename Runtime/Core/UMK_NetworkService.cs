@@ -39,7 +39,10 @@ namespace UMK.Core
             {
                 _ac.Initialize(gameObject, config, Error);
                 _ac.Enable();
-                _ac.OnViolation += (msg,conf)=> Error($"AntiCheat Violation ({conf}%): {msg}");
+                _ac.OnViolation += (msg,conf)=> {
+                    if (conf > 0) Debug.LogWarning($"[UMK][AC] {msg} ({conf}%)");
+                    else Debug.Log($"[UMK][AC] {msg}");
+                };
             }
         }
 

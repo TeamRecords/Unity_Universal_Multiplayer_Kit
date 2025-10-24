@@ -8,11 +8,15 @@ namespace UMK.Core
         public string Name => "VAC";
         public bool Available => Type.GetType("Steamworks.SteamClient, Facepunch.Steamworks") != null || Type.GetType("Steamworks.SteamAPI, Steamworks.NET") != null;
         public event Action<string,int> OnViolation;
+
         public void Initialize(GameObject context, UMK_NetworkConfig config, Action<string> onError)
         {
+            // Touch event to avoid CS0067 'never used' warning
+            var _ = OnViolation;
             if (!Available) onError?.Invoke("Steamworks not detected (VAC requires Steam).");
         }
-        public void Enable(){}
-        public void Disable(){}
+
+        public void Enable(){ /* hook provider here if present */ }
+        public void Disable(){ }
     }
 }
