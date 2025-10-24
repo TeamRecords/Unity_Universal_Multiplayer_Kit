@@ -24,7 +24,8 @@ namespace UMK.Runtime
                 var textGO = new GameObject("Label");
                 textGO.transform.SetParent(go.transform, false);
                 label = textGO.AddComponent<Text>();
-                label.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                // Use LegacyRuntime.ttf instead of Arial; Arial.ttf is no longer a valid built‑in font on Unity 6
+                label.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
                 label.fontSize = 14;
                 label.alignment = TextAnchor.UpperLeft;
                 var rt = label.rectTransform; rt.anchorMin = new Vector2(0,1); rt.anchorMax = new Vector2(0,1); rt.pivot = new Vector2(0,1); rt.anchoredPosition = new Vector2(10,-10);

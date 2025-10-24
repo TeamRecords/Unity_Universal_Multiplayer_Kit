@@ -1,5 +1,8 @@
 using System;
 using UnityEngine;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
 
 namespace UMK.Core
 {
@@ -61,14 +64,45 @@ namespace UMK.Core
 
         void Update()
         {
+#if ENABLE_INPUT_SYSTEM
+            // When using the new Input System, UnityEngine.Input.GetKeyDown is invalid. Use the InputSystem API instead.
+            if (Keyboard.current != null && config != null)
+            {
+                // Try to parse the KeyCode name into an InputSystem Key enum; fallback to F9 if parsing fails.
+                var keyName = config.toggleOverlayKey.ToString();
+                if (System.Enum.TryParse<UnityEngine.InputSystem.Key>(keyName, out var sysKey))
+                {
+                    if (Keyboard.current[sysKey].wasPressedThisFrame)
+                        _diag.Toggle();
+                }
+                else
+                {
+                    if (Keyboard.current[UnityEngine.InputSystem.Key.F9].wasPressedThisFrame)
+                        _diag.Toggle();
+                }
+            }
+#else
+            // Legacy Input Manager: safe to call Input.GetKeyDown
             if (Input.GetKeyDown(config.toggleOverlayKey))
                 _diag.Toggle();
+#endif
         }
 
         public void StartHost(){ _transport.StartHost(); }
         public void StartClient(string addrOrCode){ _transport.StartClient(addrOrCode); }
         public void StartServer(){ _transport.StartServer(); }
 
-        void Error(string message){ Debug.LogError($"[UMK] {message}"); }
+        void Error(string message)
+        {
+            // Downgrade the "Mirror not present" message to an info log instead of an error.
+            if (!string.IsNullOrEmpty(message) && message.Contains("Mirror not present"))
+            {
+                Debug.Log($"[UMK] {message}");
+            }
+            else
+            {
+                Debug.LogError($"[UMK] {message}");
+            }
+        }
     }
 }
