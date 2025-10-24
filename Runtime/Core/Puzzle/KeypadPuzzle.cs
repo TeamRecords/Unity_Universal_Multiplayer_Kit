@@ -64,11 +64,14 @@ namespace UMK.Core.Puzzle
             }
         }
 
-        public void Interact(GameObject interactor)
+        public void Interact(NetBehaviourBase interactor)
         {
             // Example: digits can be input via Interact call if keyed by 0-9; this is just a placeholder
             // In a real game, call AddDigit from UI or input system.
-            Debug.Log("KeypadPuzzle was interacted with by " + interactor.name);
+            if (interactor != null)
+            {
+                Debug.Log("KeypadPuzzle was interacted with by " + interactor.gameObject.name);
+            }
         }
 
         private void OnSolvedChanged(bool oldValue, bool newValue)

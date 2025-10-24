@@ -27,7 +27,7 @@ namespace UMK.Core.Puzzle
         [Tooltip("Rotation when on.")]
         public Vector3 rotationOn = new Vector3(0f, 0f, 30f);
 
-        public void Interact(GameObject interactor)
+        public void Interact(NetBehaviourBase interactor)
         {
             // Only host/offline can toggle state
             if (IsServerOrOffline())
