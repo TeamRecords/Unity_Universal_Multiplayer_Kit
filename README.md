@@ -18,7 +18,7 @@ UMK_NetworkService.Instance.Diagnostics.Toggle();
 
 ### Expanding your game with UMK
 
-UMK is more than just a transport layer. It includes a set of optional helpers to accelerate common gameplay patterns:
+UMK is more than just a transport layer. It includes a set of optional helpers to accelerate common gameplay patterns and environmental simulation:
 
 * **EventBus** – a simple publish/subscribe system that lets any part of your game send messages without tight coupling. You can subscribe to events like `FootstepEvent`, `DoorToggleEvent`, `PickupEvent`, `AudioEvent`, `ObjectActionEvent`, and `TerrainModifyEvent`.
 * **NetBehaviourBase** – a base class that becomes a `NetworkBehaviour` when Mirror is present and falls back to `MonoBehaviour` otherwise. Use this for any component that needs network awareness.
@@ -29,6 +29,24 @@ UMK is more than just a transport layer. It includes a set of optional helpers t
 * **Terrain modifiers** – implement `ITerrainModifier` to deform terrain or spawn effects. The included `TerrainModifier` publishes a `TerrainModifyEvent` with position and intensity.
 
 These systems are completely optional – you can use as much or as little as you need. They do not depend on Mirror unless you derive from `NetBehaviourBase` or add your own network replication. Everything still works in a pure offline/local context.
+
+### Expanded Systems (UMK 2025 Update)
+
+UMK now ships with many additional gameplay modules to support more advanced and varied projects:
+
+* **Environment** – a `DayNightCycle` component replicates the time of day across the network and drives a sun light for realistic day/night transitions. A `WeatherSystem` replicates weather states (clear, cloudy, rain, fog, storm) and toggles particles and audio accordingly. `FirePropagator` allows objects to catch fire and optionally spread to nearby objects, replicating the burn state to all clients.
+
+* **Physics** – `NetworkPhysicsObject` wraps a Rigidbody and automatically adds a `NetworkTransform` when Mirror is present. It disables client‑side physics when not authoritative and syncs position/rotation across the network. `DamageSystem` centralises applying damage; any component implementing `IDamageReceiver` can be damaged locally or via the server.
+
+* **Puzzle** – building blocks for networked puzzles: `LeverSwitch` toggles on/off when interacted with and replicates state; `KeypadPuzzle` replicates input and solved status; `PuzzleManager` watches a set of puzzles and fires an event when all are solved.
+
+* **AI** – `PathfindingAgent` replicates NavMeshAgent destinations across the network; `AIController` uses a `PathfindingAgent` to patrol a list of waypoints on the server.
+
+* **UI Enhancements** – `AdvancedScoreboard` displays player names, kills, deaths and ping; it auto‑detects a `PlayerStats` component on player objects and falls back to connection IDs. A `NetworkChat` component (not pictured) provides basic text chat. A `PerformanceMonitor` shows FPS and toggle on/off via F10.
+
+* **Utilities** – `NetworkDebugConsole` implements a simple in‑game console for running commands locally or via the server. `PerformanceMonitor` displays a lightweight FPS counter. These utilities help during development and can be disabled in shipping builds.
+
+* **AI and Interaction Integration** – the existing `CharacterAI`, `CharacterInventory`, `CharacterHealth` and new `DamageSystem` integrate seamlessly, enabling AI agents to patrol, take damage and die, and enabling players to pick up items, equip them and use them in puzzles.
 
 ### Example: adding a networked character
 

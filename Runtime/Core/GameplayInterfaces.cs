@@ -76,4 +76,15 @@ namespace UMK.Core
     {
         void ModifyTerrain(Vector3 worldPosition, float amount);
     }
+
+    /// <summary>
+    /// Represents an item that can be stored in an inventory. Items can optionally be used
+    /// (e.g., consumed or activated). For equipable items use IEquipable; for non-equipable
+    /// consumables implement this interface.
+    /// </summary>
+    public interface IInventoryItem
+    {
+        string Name { get; }
+        void OnUse(NetBehaviourBase owner);
+    }
 }
